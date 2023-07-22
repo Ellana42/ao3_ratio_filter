@@ -1,7 +1,6 @@
 window.onload = modifyPage();
 
 function displayMetrics(work) {
-  console.log("recall");
   var hits = work.querySelector("dd.hits").innerHTML;
   var kudos = work.querySelector("dd.kudos").firstChild.innerHTML;
   var bookmarks = work.querySelector("dd.bookmarks");
@@ -33,10 +32,35 @@ function displayMetrics(work) {
   }
 }
 
+function filter() {
+  var work_list = document.getElementsByClassName("work index group")[0];
+  var works = work_list.getElementsByClassName("blurb");
+  works = Array.from(works)
+    .sort((a, b) => {
+      var nb = b.querySelector("dd.kudosPerHit").innerHTML;
+      return (
+        parseFloat(b.querySelector("dd.kudosPerHit").innerHTML) -
+        parseFloat(a.querySelector("dd.kudosPerHit").innerHTML)
+      );
+    })
+    .forEach((li) => work_list.appendChild(li));
+}
+
+function addFilterButton() {
+  // var sort = document.getElementsByClassName("sort")[1].parentNode;
+  // var sortOption = document.createElement("input");
+  // sortOption.type = "checkbox";
+  // sort.appendChild(sortOption);
+  // var indicator = document.createElement("span");
+  // indicator.class = "indicator";
+  // indicator.ariaHidden = true;
+  // sort.appendChild(indicator);
+}
+
 function modifyPage() {
-  console.log("CALLED");
   var works = document.getElementsByClassName("blurb");
   works = Array.from(works);
 
   works.map(displayMetrics);
+  filter();
 }
